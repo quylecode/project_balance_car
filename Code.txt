@@ -1,0 +1,492 @@
+#define RAD_TO_DEG 59.29577951
+
+/*#define MPU6050_I2C_Wr(value) I2C1_Wr(value)
+#define MPU6050_I2C_Rd(value) I2C1_Rd(value)
+#define MPU6050_I2C_Stop()    I2C1_Stop()
+#define MPU6050_I2C_Start()   I2C1_Start()*/
+//
+#define MPU6050_ADDRESS             0xD0
+#define MPU6050_RA_XG_OFFS_TC       0x00
+#define MPU6050_RA_YG_OFFS_TC       0x01
+#define MPU6050_RA_ZG_OFFS_TC       0x02
+#define MPU6050_RA_X_FINE_GAIN      0x03
+#define MPU6050_RA_Y_FINE_GAIN      0x04
+#define MPU6050_RA_Z_FINE_GAIN      0x05
+#define MPU6050_RA_XA_OFFS_H        0x06
+#define MPU6050_RA_XA_OFFS_L_TC     0x07
+#define MPU6050_RA_YA_OFFS_H        0x08
+#define MPU6050_RA_YA_OFFS_L_TC     0x09
+#define MPU6050_RA_ZA_OFFS_H        0x0A
+#define MPU6050_RA_ZA_OFFS_L_TC     0x0B
+#define MPU6050_RA_XG_OFFS_USRH     0x13
+#define MPU6050_RA_XG_OFFS_USRL     0x14
+#define MPU6050_RA_YG_OFFS_USRH     0x15
+#define MPU6050_RA_YG_OFFS_USRL     0x16
+#define MPU6050_RA_ZG_OFFS_USRH     0x17
+#define MPU6050_RA_ZG_OFFS_USRL     0x18
+#define MPU6050_RA_SMPLRT_DIV       0x19
+#define MPU6050_RA_CONFIG           0x1A
+#define MPU6050_RA_GYRO_CONFIG      0x1B
+#define MPU6050_RA_ACCEL_CONFIG     0x1C
+#define MPU6050_RA_FF_THR           0x1D
+#define MPU6050_RA_FF_DUR           0x1E
+#define MPU6050_RA_MOT_THR          0x1F
+#define MPU6050_RA_MOT_DUR          0x20
+#define MPU6050_RA_ZRMOT_THR        0x21
+#define MPU6050_RA_ZRMOT_DUR        0x22
+#define MPU6050_RA_FIFO_EN          0x23
+#define MPU6050_RA_I2C_MST_CTRL     0x24
+#define MPU6050_RA_I2C_SLV0_ADDR    0x25
+#define MPU6050_RA_I2C_SLV0_REG     0x26
+#define MPU6050_RA_I2C_SLV0_CTRL    0x27
+#define MPU6050_RA_I2C_SLV1_ADDR    0x28
+#define MPU6050_RA_I2C_SLV1_REG     0x29
+#define MPU6050_RA_I2C_SLV1_CTRL    0x2A
+#define MPU6050_RA_I2C_SLV2_ADDR    0x2B
+#define MPU6050_RA_I2C_SLV2_REG     0x2C
+#define MPU6050_RA_I2C_SLV2_CTRL    0x2D
+#define MPU6050_RA_I2C_SLV3_ADDR    0x2E
+#define MPU6050_RA_I2C_SLV3_REG     0x2F
+#define MPU6050_RA_I2C_SLV3_CTRL    0x30
+#define MPU6050_RA_I2C_SLV4_ADDR    0x31
+#define MPU6050_RA_I2C_SLV4_REG     0x32
+#define MPU6050_RA_I2C_SLV4_DO      0x33
+#define MPU6050_RA_I2C_SLV4_CTRL    0x34
+#define MPU6050_RA_I2C_SLV4_DI      0x35
+#define MPU6050_RA_I2C_MST_STATUS   0x36
+#define MPU6050_RA_INT_PIN_CFG      0x37
+#define MPU6050_RA_INT_ENABLE       0x38
+#define MPU6050_RA_DMP_INT_STATUS   0x39
+#define MPU6050_RA_INT_STATUS       0x3A
+#define MPU6050_RA_ACCEL_XOUT_H     0x3B
+#define MPU6050_RA_ACCEL_XOUT_L     0x3C
+#define MPU6050_RA_ACCEL_YOUT_H     0x3D
+#define MPU6050_RA_ACCEL_YOUT_L     0x3E
+#define MPU6050_RA_ACCEL_ZOUT_H     0x3F
+#define MPU6050_RA_ACCEL_ZOUT_L     0x40
+#define MPU6050_RA_TEMP_OUT_H       0x41
+#define MPU6050_RA_TEMP_OUT_L       0x42
+#define MPU6050_RA_GYRO_XOUT_H      0x43
+#define MPU6050_RA_GYRO_XOUT_L      0x44
+#define MPU6050_RA_GYRO_YOUT_H      0x45
+#define MPU6050_RA_GYRO_YOUT_L      0x46
+#define MPU6050_RA_GYRO_ZOUT_H      0x47
+#define MPU6050_RA_GYRO_ZOUT_L      0x48
+#define MPU6050_RA_EXT_SENS_DATA_00 0x49
+#define MPU6050_RA_EXT_SENS_DATA_01 0x4A
+#define MPU6050_RA_EXT_SENS_DATA_02 0x4B
+#define MPU6050_RA_EXT_SENS_DATA_03 0x4C
+#define MPU6050_RA_EXT_SENS_DATA_04 0x4D
+#define MPU6050_RA_EXT_SENS_DATA_05 0x4E
+#define MPU6050_RA_EXT_SENS_DATA_06 0x4F
+#define MPU6050_RA_EXT_SENS_DATA_07 0x50
+#define MPU6050_RA_EXT_SENS_DATA_08 0x51
+#define MPU6050_RA_EXT_SENS_DATA_09 0x52
+#define MPU6050_RA_EXT_SENS_DATA_10 0x53
+#define MPU6050_RA_EXT_SENS_DATA_11 0x54
+#define MPU6050_RA_EXT_SENS_DATA_12 0x55
+#define MPU6050_RA_EXT_SENS_DATA_13 0x56
+#define MPU6050_RA_EXT_SENS_DATA_14 0x57
+#define MPU6050_RA_EXT_SENS_DATA_15 0x58
+#define MPU6050_RA_EXT_SENS_DATA_16 0x59
+#define MPU6050_RA_EXT_SENS_DATA_17 0x5A
+#define MPU6050_RA_EXT_SENS_DATA_18 0x5B
+#define MPU6050_RA_EXT_SENS_DATA_19 0x5C
+#define MPU6050_RA_EXT_SENS_DATA_20 0x5D
+#define MPU6050_RA_EXT_SENS_DATA_21 0x5E
+#define MPU6050_RA_EXT_SENS_DATA_22 0x5F
+#define MPU6050_RA_EXT_SENS_DATA_23 0x60
+#define MPU6050_RA_MOT_DETECT_STATUS    0x61
+#define MPU6050_RA_I2C_SLV0_DO      0x63
+#define MPU6050_RA_I2C_SLV1_DO      0x64
+#define MPU6050_RA_I2C_SLV2_DO      0x65
+#define MPU6050_RA_I2C_SLV3_DO      0x66
+#define MPU6050_RA_I2C_MST_DELAY_CTRL   0x67
+#define MPU6050_RA_SIGNAL_PATH_RESET    0x68
+#define MPU6050_RA_MOT_DETECT_CTRL      0x69
+#define MPU6050_RA_USER_CTRL        0x6A
+#define MPU6050_RA_PWR_MGMT_1       0x6B
+#define MPU6050_RA_PWR_MGMT_2       0x6C
+#define MPU6050_RA_BANK_SEL         0x6D
+#define MPU6050_RA_MEM_START_ADDR   0x6E
+#define MPU6050_RA_MEM_R_W          0x6F
+#define MPU6050_RA_DMP_CFG_1        0x70
+#define MPU6050_RA_DMP_CFG_2        0x71
+#define MPU6050_RA_FIFO_COUNTH      0x72
+#define MPU6050_RA_FIFO_COUNTL      0x73
+#define MPU6050_RA_FIFO_R_W         0x74
+#define MPU6050_RA_WHO_AM_I         0x75
+
+sbit STEP1_DIR at TRISB.B0;
+sbit STEP2_DIR at TRISB.B1;
+
+sbit DIR1_DIR at TRISB.B2;
+sbit DIR2_DIR at TRISB.B3;
+
+sbit MS1_DIR at TRISB.B4;
+sbit MS2_DIR at TRISB.B5;
+sbit MS3_DIR at TRISB.B6;
+sbit EN_DIR at TRISB.B7;
+
+sbit STEP1 at PORTB.B0;
+sbit STEP2 at PORTB.B1;
+
+sbit DIR1 at PORTB.B2;
+sbit DIR2 at PORTB.B3;
+
+sbit MS1 at PORTB.B4;
+sbit MS2 at PORTB.B5;
+sbit MS3 at PORTB.B6;
+sbit EN at PORTB.B7;
+
+// Software I2C connections
+sbit soft_i2c_scl           at RD6_bit;
+sbit soft_i2c_sda           at RD7_bit;
+sbit soft_i2c_scl_direction at TRISD6_bit;
+sbit soft_i2c_sda_direction at TRISD7_bit;
+// End Software I2C connections
+
+float Kp = 15;     //  2.9
+float Ki = 1.5;
+float Kd = 0;
+float Offset = 10;
+float Input, Input_last, Vgo = 0, Output, I, Output_L, Output_R, Motor_R, Motor_L;
+float Angle;
+
+signed char DIR_M1, DIR_M2;
+
+double accX, accY, gyroX, gyroY, gyroZ;
+double gyroXOffset, gyroYOffset, gyroZOffset;
+double xAngle, zAngle, duration, yAngle;
+int accRawX, accRawY, accRawZ, gyroRawX, gyroRawY, gyroRawZ;
+unsigned timer = 0, prevMillis = 0, curMillis;
+
+long ticks = 0, pre = 0;
+
+signed int dem = 0;
+unsigned int counter1, counter2;
+int TOP1, TOP2, BOT1, BOT2, train;
+char uart;
+
+float constrain(float a, float min, float max);
+void set_ticks(int tick);
+long get_ticks(void);
+void ReadAngle(void);
+
+unsigned char MPU6050_Read(unsigned char address);
+void Mpu6050_Write(unsigned char address,unsigned char Data);
+int Mpu6050_GetData(unsigned char address);
+void Mpu6050_Init();
+
+void Speed_R(int speed);
+void Speed_L(int speed);
+
+#define TIMER1H_VAL 53536 >> 8
+#define TIMER1L_VAL 53536 & 0x00FF
+
+void main()
+{
+     soft_i2c_init();
+     UART1_Init(9600);
+     UART_Write_Text("Init UART OK\r\n");
+     Mpu6050_Init();
+     UART_Write_Text("Init MPU6050 OK\r\n");
+     
+     T0CON.T08BIT = 1;
+     T0CON.T0CS = 0;
+     T0CON.PSA = 0;
+     T0CON.T0PS2 = 0;
+     T0CON.T0PS1 = 0;
+     T0CON.T0PS0 = 0;
+
+     TMR0L = 0;
+
+     INTCON.TMR0IE = 1;
+     INTCON.TMR0IF = 0;
+     INTCON.GIE = 1;
+     T0CON.TMR0ON = 1;
+
+     T1CON.RD16 = 1;
+     T1CON.TMR1CS = 0;
+     T1CON.T1CKPS1 = 0;
+     T1CON.T1CKPS0 = 0;
+     T1CON.T1OSCEN = 0;
+     IPR1.TMR1IP = 0;
+
+     PIE1.TMR1IE = 1;
+     PIR1.TMR1IF = 0;
+
+     TMR1H = TIMER1H_VAL ;
+     TMR1L = TIMER1L_VAL;
+
+     T1CON.TMR1ON = 1;
+
+     ADCON1 = 0x0E;
+     
+     STEP1_DIR = 0;
+     STEP2_DIR = 0;
+     DIR1_DIR = 0;
+     DIR2_DIR = 0;
+     MS1_DIR = 0;
+     MS2_DIR = 0;
+     MS3_DIR = 0;
+     EN_DIR = 0;
+     
+     MS1 = 1;
+     MS2 = 1;
+     MS3 = 1;
+     EN = 0;
+
+     TRISC = 0;
+     
+     for(train = 0; train < 300; train++)
+     {
+        ReadAngle();
+        Delay_10ms();
+     }
+
+     pre = get_ticks();
+     
+     while(1)
+     {
+            if(get_ticks() - pre >= 33)
+            {
+              ReadAngle();
+              //Dùng PID cho MOTOR
+              Input = yAngle + Offset - Vgo;
+              I += Input * Ki;
+              I = constrain(I, -400, 400);
+
+              Output = Kp * Input + I + Kd * (Input - Input_last);
+              Input_last = Input;
+
+              if (Output > -5 && Output < 5) Output = 0;
+              Output = constrain(Output, -400, 400);
+
+              Output_L = Output;
+              Output_R = Output;
+              
+              // If data is ready, read it:
+              if (UART1_Data_Ready() == 1) {
+               uart = UART1_Read();
+              }
+              if (uart == 'F') { //go
+                if (Vgo < 15.5) Vgo += 0.5;
+                if (Output > 250) Vgo -= 0.05;
+              }
+              else if (uart == 'B') { //back
+                if (Vgo > - 13.5) Vgo -= 0.5;
+                if (Output < - 250) Vgo += 0.05;
+              }
+              else if (uart == 'L') { //left
+                Output_L -= 60;
+                Output_R += 60;
+              }
+              else if (uart == 'R') { //right
+                Output_L += 60;
+                Output_R -= 60;
+              }
+              else if (uart == 'S') { //stop
+                Vgo = 0;
+              }
+
+              if (Output_L > 0)Output_L = 405 - (1 / (Output_L + 9)) * 5500;
+              else if (Output_L < 0)  Output_L = -405 - (1 / (Output_L - 9)) * 5500;
+
+              if (Output_R > 0)Output_R = 405 - (1 / (Output_R + 9)) * 5500; //  Output_R = 1    ----> M_R = -145
+              //                                                            Output_R = 4.58 ----> M_R = 0
+              //                                                            Output_R = 10   ----> M_R = 115.52
+              //                                                            Output_R = 400  ----> M_R = 391.55
+              else if (Output_R < 0)Output_R = -405 - (1 / (Output_R - 9)) * 5500;
+
+              if (Output_L > 0)Motor_L = 400 - Output_L;
+              else if (Output_L < 0)Motor_L = -400 - Output_L;
+              else Motor_L = 0;
+
+              if (Output_R > 0)Motor_R = 400 - Output_R;
+              else if (Output_R < 0)Motor_R = -400 - Output_R;
+              else Motor_R = 0;
+
+              Speed_R(Motor_R);
+              Speed_L(Motor_L);
+
+              pre = get_ticks();
+            }
+     }
+}
+
+void ReadAngle(void)
+{
+    if(get_ticks() - prevMillis < 3)
+           return;
+
+   accRawX = Mpu6050_GetData(MPU6050_RA_ACCEL_XOUT_H);
+   accRawY = Mpu6050_GetData(MPU6050_RA_ACCEL_YOUT_H);
+   accRawZ = Mpu6050_GetData(MPU6050_RA_ACCEL_ZOUT_H);
+   gyroRawX = Mpu6050_GetData(MPU6050_RA_GYRO_XOUT_H);
+   gyroRawY = Mpu6050_GetData(MPU6050_RA_GYRO_YOUT_H);
+   gyroRawZ = Mpu6050_GetData(MPU6050_RA_GYRO_ZOUT_H);
+
+   accX = atan((accRawY / 16384.0) / sqrt(pow((accRawX / 16384.0), 2) + pow((accRawZ / 16384.0), 2))) * RAD_TO_DEG;
+   accY = atan(-1 * (accRawX / 16384.0) / sqrt(pow((accRawY / 16384.0), 2) + pow((accRawZ / 16384.0), 2))) * RAD_TO_DEG;
+
+   gyroX = (gyroRawX + gyroXOffset) / 131.0;
+   gyroY = (gyroRawY + gyroYOffset) / 131.0;
+   gyroZ = (gyroRawZ + gyroZOffset) / 131.0;
+
+   curMillis = get_ticks();
+   duration = (curMillis - prevMillis) * 1e-3;
+   prevMillis = curMillis;
+
+   xAngle = 0.98*(xAngle + gyroX * duration) + 0.02*accX;
+   yAngle = 0.98*(yAngle + gyroY * duration) + 0.02*accY;
+   zAngle = zAngle + gyroZ * duration;
+}
+
+void Speed_R(int speed)
+{
+   if(speed > 0)
+   {
+      DIR_M1 = 1;
+      DIR1 = 1;
+   }
+   else if(speed < 0)
+   {
+      DIR_M1 = -1;
+      DIR1 = 0;
+   }
+   else DIR_M1 = 0;
+   BOT1 = abs(speed);
+   TOP1 = BOT1/2;
+}
+void Speed_L(int speed)
+{
+   if(speed > 0)
+   {
+      DIR_M2 = 1;
+      DIR2 = 1;
+   }
+   else if(speed < 0)
+   {
+      DIR_M2 = -1;
+      DIR2 = 0;
+   }
+   else DIR_M2 = 0;
+   BOT2 = abs(speed);
+   TOP2 = BOT2/2;
+}
+
+
+float constrain(float a, float min, float max)
+{
+    if(a < min)
+    {
+        return min;
+    }
+    else if (a > max)
+    {
+        return max;
+    }
+    return a;
+}
+
+void set_ticks(int tick)
+{
+     ticks = 0;
+}
+
+long get_ticks(void)
+{
+    return ticks;
+}
+
+unsigned char MPU6050_Read(unsigned char address)
+{
+   char Data;
+   soft_i2c_start();
+   soft_i2c_write( MPU6050_ADDRESS );
+   soft_i2c_write(address);
+   soft_i2c_start();
+   soft_i2c_write( MPU6050_ADDRESS | 1 );
+   Data=soft_i2c_read(0);
+   soft_i2c_stop();
+   return Data;
+}
+void Mpu6050_Write(unsigned address,unsigned Data)
+{
+   soft_i2c_start();
+   soft_i2c_write( MPU6050_ADDRESS );
+   soft_i2c_write( address);
+   soft_i2c_write( Data);
+   soft_i2c_stop();
+}
+
+int Mpu6050_GetData(unsigned char address)
+{
+   int H=0,L=0;
+   soft_i2c_start();
+   soft_i2c_write( MPU6050_ADDRESS );
+   soft_i2c_write(address);
+   soft_i2c_start();
+   soft_i2c_write( MPU6050_ADDRESS |1);
+   H = soft_i2c_read(1);
+   L = soft_i2c_read(0);
+   soft_i2c_stop();
+   return (H<<8)|L;
+}
+
+void Mpu6050_Init()
+{
+   Delay_ms(100);
+
+   Mpu6050_Write(MPU6050_RA_PWR_MGMT_1,0x80);
+   Delay_ms(5);
+   Mpu6050_Write(MPU6050_RA_PWR_MGMT_1, 0x00);
+   Mpu6050_Write(MPU6050_RA_SMPLRT_DIV, 0x07);  //Set the sample rate to 1000Hz - 8kHz/(7+1) = 1000Hz
+   Mpu6050_Write(MPU6050_RA_CONFIG, 0x00);
+
+   Mpu6050_Write(MPU6050_RA_GYRO_CONFIG, 0x00);
+
+   Mpu6050_Write(MPU6050_RA_ACCEL_CONFIG, 0x00);
+
+   Mpu6050_Write(MPU6050_RA_USER_CTRL, 0x00);
+   Mpu6050_Write(MPU6050_RA_PWR_MGMT_1, 0x01);
+   Delay_ms(10);
+}
+
+void interrupt()
+{
+      if(INTCON.TMR0IF)
+        {
+             T0CON.TMR0ON = 0;
+             TMR0L = 161;     // 143
+
+             if(DIR_M1 != 0)
+             {
+                 counter1++;
+                 if(counter1 <= TOP1) STEP1 = 1;
+                 else STEP1 = 0;
+                 if(counter1 >= BOT1) counter1 = 0;
+             }
+             if(DIR_M2 != 0)
+             {
+                 counter2++;
+                 if(counter2 <= TOP2) STEP2 = 1;
+                 else STEP2 = 0;
+                 if(counter2 >= BOT2) counter2 = 0;
+             }
+             INTCON.TMR0IF = 0;
+             T0CON.TMR0ON = 1;
+        }
+        if(PIR1.TMR1IF)
+        {
+             TMR1H = TIMER1H_VAL;
+             TMR1L = TIMER1L_VAL;
+             ticks++;
+             PIR1.TMR1IF = 0;
+        }
+}
+
+
+
+// if (Output > 10 || Output < -10) Input += Output * 0.025 ;
